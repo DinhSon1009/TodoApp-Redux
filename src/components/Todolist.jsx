@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Todo } from "./Todo";
-import {
-  DELETE_TODO,
-  COMPLETE_HANDLER,
-} from "../redux/constants/TodoListConstants";
+import Todo from "./Todo";
 
 export class TodoList extends Component {
   render() {
@@ -12,14 +8,7 @@ export class TodoList extends Component {
       <div className="todo-container">
         <ul className="todo-list">
           {this.props.filterList.map((todo, index) => (
-            <Todo
-              key={index}
-              text={todo.taskName}
-              todo={todo}
-              deleteTodo={this.props.deleteTodo}
-              completeHandler={this.props.completeHandler}
-              handleEdit={this.props.handleEdit}
-            />
+            <Todo key={index} todo={todo} />
           ))}
         </ul>
       </div>
@@ -41,17 +30,4 @@ let mapStateToProps = (state) => {
   return { filterList: filterList };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    deleteTodo: (todo) => dispatch({ type: DELETE_TODO, payload: todo.id }),
-    completeHandler: (todo) =>
-      dispatch({ type: COMPLETE_HANDLER, payload: todo.id }),
-    handleEdit: (todo) =>
-      dispatch({
-        type: "EDIT",
-        payload: todo,
-      }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export default connect(mapStateToProps)(TodoList);

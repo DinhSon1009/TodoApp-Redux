@@ -1,3 +1,13 @@
+import {
+  ADD_TODO,
+  CANCEL_EDIT,
+  COMPLETE_HANDLER,
+  DELETE_TODO,
+  EDIT,
+  EDITED,
+  FILTER_HANDLER,
+} from "../constants/TodoListConstants";
+
 const initialState = {
   todos: [],
   filterMode: "all",
@@ -7,17 +17,17 @@ const initialState = {
 
 const todoReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_TODO":
+    case ADD_TODO:
       return {
         ...state,
         todos: [...state.todos, action.payload],
       };
-    case "DELETE_TODO":
+    case DELETE_TODO:
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.payload),
       };
-    case "COMPLETE_HANDLER":
+    case COMPLETE_HANDLER:
       return {
         ...state,
         todos: state.todos.map((item) => {
@@ -30,32 +40,34 @@ const todoReducer = (state = initialState, action) => {
           return item;
         }),
       };
-    case "FILTER_HANDLER":
+    case FILTER_HANDLER:
       return {
         ...state,
         filterMode: action.payload,
       };
 
-    case "EDIT":
+    case EDIT:
       return {
         ...state,
         editable: true,
         editItem: action.payload,
       };
-    case "EDITED":
-      let index = state.todos.findIndex((todo) => todo.id === action.payload);
-      state.todos[index].taskName = action.text;
+    case EDITED:
+      let index = state.todos.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      state.todos[index].taskName = action.payload.text;
       return {
         ...state,
         todos: [...state.todos],
-        editable: action.editable,
-        editID: action.editID,
+        editable: action.payload.editable,
+        editID: action.payload.editID,
       };
-    case "CANCEL_EDIT":
+    case CANCEL_EDIT:
       return {
         ...state,
-        editable: action.editable,
-        editID: action.editID,
+        editable: action.payload.editable,
+        editID: action.payload.editID,
       };
 
     default:

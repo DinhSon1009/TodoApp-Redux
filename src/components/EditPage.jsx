@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { CANCEL_EDIT, EDITED } from "../redux/constants/TodoListConstants";
 export class EditPage extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +16,7 @@ export class EditPage extends Component {
     e.preventDefault();
     this.props.handleEdit(this.state.text, this.props.editItem.id);
   };
-  
+
   render() {
     return (
       <form>
@@ -44,18 +45,22 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleEdit: (text, id) => {
       dispatch({
-        type: "EDITED",
-        payload: id,
-        text: text,
-        editable: false,
-        editID: "",
+        type: EDITED,
+        payload: {
+          id: id,
+          text: text,
+          editable: false,
+          editID: "",
+        },
       });
     },
     handleCancle: () => {
       dispatch({
-        type: "CANCEL_EDIT",
-        editable: false,
-        editID: "",
+        type: CANCEL_EDIT,
+        payload: {
+          editable: false,
+          editID: "",
+        },
       });
     },
   };
